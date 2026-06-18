@@ -38,7 +38,7 @@ The default accrual of `0.0577` hours per hour worked works out to roughly 15 da
 
 ## Deployment
 
-See [DEPLOY.md](DEPLOY.md) for instructions on publishing to GitHub Pages or Cloudflare Pages.
+Cloudflare Pages. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, pick this repo, then accept the Vite preset (`npm run build`, output `dist/`). Every push to `main` redeploys.
 
 ## Project layout
 

@@ -63,18 +63,38 @@ button {
   align-items: start;
 }
 
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 .sidebar {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  position: sticky;
-  top: 16px;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* On narrow screens the calendar is the primary thing; show it above settings. */
+  .main {
+    order: -1;
+  }
+
+  /* Pack the sidebar into a 2-up grid so it's not a tall stack under the calendar.
+     Cards default to spanning the full row; .compact ones (Click mode, Summary)
+     sit side-by-side to recover vertical space. Default align-items: stretch
+     makes the paired cards match the taller one's height. */
+  .sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sidebar > .card {
+    grid-column: 1 / -1;
+  }
+
+  .sidebar > .card.compact {
+    grid-column: auto;
+  }
 }
 
 .card {
@@ -435,4 +455,244 @@ button {
 
 .cal-cell.negative {
   border-color: var(--negative);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .app {
+    padding: 12px;
+  }
+
+  .app-header {
+    margin-bottom: 16px;
+  }
+
+  .app-header h1 {
+    font-size: 22px;
+  }
+
+  .app-header .subtitle {
+    font-size: 13px;
+  }
+
+  .layout {
+    gap: 16px;
+  }
+
+  .sidebar {
+    position: static;
+    gap: 12px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  /* 16px prevents iOS Safari from zooming on focus */
+  .card input {
+    font-size: 16px;
+    padding: 6px 8px;
+  }
+
+  .card label {
+    margin-bottom: 8px;
+  }
+
+  /* Accrual card: lay the four inputs out 2-up so the card isn't a tall stack.
+     The hint under the first label spans both columns. */
+  .card.accrual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 0;
+  }
+
+  .card.accrual h3 {
+    grid-column: 1 / -1;
+  }
+
+  .card.accrual label .hint {
+    /* Keep the hint compact so the first cell isn't taller than its neighbor */
+    font-size: 10px;
+  }
+
+  .calendar {
+    padding: 8px;
+  }
+
+  .cal-header {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .cal-header h2 {
+    font-size: 16px;
+  }
+
+  .cal-header-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  /* Wrap the mode indicator above the Today/next buttons on small screens
+     so the header stays on a single visual row: [<] [Title] [right block] */
+  .cal-mode-indicator {
+    width: 100%;
+    margin-right: 0;
+    text-align: right;
+    order: -1;
+  }
+
+  .cal-header button {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .cal-grid {
+    gap: 2px;
+  }
+
+  .cal-cell {
+    min-height: 56px;
+    padding: 3px;
+    border-radius: 4px;
+    gap: 2px;
+  }
+
+  .cal-day-num {
+    font-size: 11px;
+  }
+
+  .cal-balance {
+    font-size: 11px;
+  }
+
+  .cal-balance-days {
+    font-size: 10px;
+  }
+
+  .cal-pto-badge {
+    font-size: 8px;
+    padding: 0 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .cal-weekday {
+    font-size: 10px;
+    padding: 4px 0;
+  }
+
+  .pto-list {
+    max-height: 160px;
+  }
+}
+
+@media (max-width: 380px) {
+  .cal-cell {
+    min-height: 48px;
+  }
+
+  /* On tiny screens, hide the day breakdown to keep cells readable */
+  .cal-balance-days {
+    display: none;
+  }
+
+  .cal-pto-badge {
+    /* Replace text badge with a corner dot */
+    font-size: 0;
+    padding: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    align-self: flex-end;
+  }
+}
+
+/* Desktop: pin the layout to the viewport so the calendar fills the screen
+   and the sidebar scrolls on its own. */
+@media (min-width: 901px) {
+  html, body, #root {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app-header {
+    flex-shrink: 0;
+  }
+
+  .layout {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .sidebar {
+    height: 100%;
+    overflow-y: auto;
+    /* Hide the scrollbar but keep scroll behavior */
+    scrollbar-width: none;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .main {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calendar {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cal-header,
+  .cal-weekdays {
+    flex-shrink: 0;
+  }
+
+  .cal-days {
+    flex: 1;
+    min-height: 0;
+    grid-auto-rows: 1fr;
+  }
+
+  .cal-cell {
+    /* let the 1fr row sizing govern, not min-height */
+    min-height: 0;
+  }
+
+  /* Center the Month / Year heading by giving the header three columns:
+     equal-width sides flank an auto middle column. minmax(0, 1fr) lets the
+     side columns size purely from the grid (not from their content) so the
+     middle column lands at the geometric center. */
+  .cal-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .cal-header > button {
+    justify-self: start;
+  }
+
+  .cal-header h2 {
+    text-align: center;
+  }
+
+  .cal-header-right {
+    justify-self: end;
+  }
 }

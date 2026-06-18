@@ -125,7 +125,7 @@ export default function App() {
 
       <div className="layout">
         <aside className="sidebar">
-          <section className="card">
+          <section className="card accrual">
             <h3>Accrual</h3>
             <label>
               PTO hours per hour worked
@@ -185,7 +185,7 @@ export default function App() {
             </div>
           </section>
 
-          <section className="card">
+          <section className="card compact">
             <h3>Click mode</h3>
             <div className="mode-toggle">
               <button
@@ -209,7 +209,7 @@ export default function App() {
             </p>
           </section>
 
-          <section className="card">
+          <section className="card compact">
             <h3>Summary</h3>
             <ul className="summary">
               <li>
