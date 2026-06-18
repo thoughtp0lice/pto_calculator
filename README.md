@@ -38,7 +38,17 @@ The default accrual of `0.0577` hours per hour worked works out to roughly 15 da
 
 ## Deployment
 
-Cloudflare Pages. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, pick this repo, then accept the Vite preset (`npm run build`, output `dist/`). Every push to `main` redeploys.
+Cloudflare Pages via GitHub Actions. The workflow in `.github/workflows/deploy.yml` runs on every push to `main` and publishes `dist/` with `wrangler pages deploy`.
+
+One-time setup:
+
+1. In the Cloudflare dashboard, create an empty Pages project named `pto-calculator` (or edit `--project-name=` in the workflow to match).
+2. Create an API token with the **Cloudflare Pages: Edit** permission.
+3. In the GitHub repo, add two Actions secrets:
+   - `CLOUDFLARE_API_TOKEN`
+   - `CLOUDFLARE_ACCOUNT_ID`
+
+After that, pushing to `main` deploys automatically.
 
 ## Project layout
 
