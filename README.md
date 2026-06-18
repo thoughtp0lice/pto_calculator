@@ -36,6 +36,10 @@ For each day between your start date and two years out:
 
 The default accrual of `0.0577` hours per hour worked works out to roughly 15 days/year on an 8-hour day.
 
+## Deployment
+
+See [DEPLOY.md](DEPLOY.md) for instructions on publishing to GitHub Pages or Cloudflare Pages.
+
 ## Project layout
 
 - `src/App.jsx` — top-level state and layout
